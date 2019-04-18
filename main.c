@@ -1,9 +1,9 @@
-#include <stdio.h>
 #include "libft.h"
+#include "fillit.h"
 
 int main()
 {
-
-	printf("Hello, World!\n");
+	read_file();
+	ft_putstr("libft includes works!!!\n");
 	return 0;
 }

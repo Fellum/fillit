@@ -1,8 +1,10 @@
 cmake_minimum_required(VERSION 3.13)
-project(fillit C)
+project(fillit_proj C)
 
 set(CMAKE_C_STANDARD 99)
 add_subdirectory("${PROJECT_SOURCE_DIR}/libft")
 include_directories("${PROJECT_SOURCE_DIR}/libft/includes")
-add_executable(fillit main.c)
-target_link_libraries(fillit libft)
+add_subdirectory("${PROJECT_SOURCE_DIR}/fillit")
+include_directories("${PROJECT_SOURCE_DIR}/fillit")
+add_executable(fillit_proj main.c)
+target_link_libraries(fillit_proj libft fillit_lib)
