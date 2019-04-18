@@ -4,6 +4,8 @@
 
 #ifndef FILLIT_FILLIT_H
 #define FILLIT_FILLIT_H
-# include "libft.h"
-int read_file();
-#endif //FILLIT_FILLIT_H
+void 	run_fillit(char *f_name);
+int read_file(char *f_name);
+void	solve_tetros(void **map, void *tetros);
+void 	output(void *map);
+#endif
