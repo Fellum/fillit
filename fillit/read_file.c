@@ -4,7 +4,7 @@
 
 #include "libft.h"
 
-int read_file(char *f_name)
+void	*read_file(char *f_name)
 {
 	ft_putstr("fillit includes works!!!\n");
 	return (0);
