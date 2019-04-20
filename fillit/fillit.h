@@ -5,11 +5,17 @@
 #ifndef FILLIT_FILLIT_H
 # define FILLIT_FILLIT_H
 # include "libft.h"
+
+
+#define BLOCK_SYMBOL '#'
+
+#define BLANK_SYMBOL '.'
+
 void 	run_fillit(char *f_name);
 
-void	*read_file(char *f_name);
+t_list	*read_file(char *f_name);
 void	solve_tetros(char ***map, t_list *tetros);
-void 	output(void *map);
+void 	output(char **map);
 
 
 int		try_solve(char **map, t_list *tetros);

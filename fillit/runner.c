@@ -5,7 +5,7 @@
 
 void 	run_fillit(char *f_name)
 {
-	void *tetros;
+	t_list *tetros;
 
 	tetros = read_file(f_name);
 
