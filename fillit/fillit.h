@@ -14,4 +14,7 @@ void 	output(void *map);
 int		try_solve(void *map, void *tetros);
 
 void	raise_error(char *desc);
+void	uncharify(unsigned char *x, unsigned char *y, unsigned char c);
+char	charify(unsigned char x, unsigned char y);
+void	printbits(unsigned char c);
 #endif
