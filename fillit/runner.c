@@ -9,7 +9,7 @@ void 	run_fillit(char *f_name)
 
 	tetros = read_file(f_name);
 
-	void *map;
+	char **map;
 
 	solve_tetros(&map, tetros);
 

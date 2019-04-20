@@ -5,34 +5,67 @@
 #include "fillit.h"
 #include "libft.h"
 
-static int calc_min(void *tetros)
+static char **create_map(int size)
 {
-	return (4);
+	char **map;
+	int i;
+	int j;
+
+	map = (char**)malloc(sizeof(char*) * (size + 1));
+	map[size] = 0;
+	i = 0;
+	while (i < size)
+	{
+		map[i] = (char*)malloc(size + 1);
+		map[i][size] = 0;
+		j = 0;
+		while (j < size)
+			map[i][j++] = '.';
+		i++;
+	}
+	return (map);
 }
 
-static void * create_map(int size)
+
+
+static void	free_map(char **map)
 {
-	return (NULL);
+	int i;
+
+	i = 0;
+	while (map[i])
+		free(map[i++]);
+	free(map);
 }
 
-static void	free_map(void **map, int size)
+int calc_min_size(int nbr)
 {
-	free(*map);
-	*map = NULL;
+	int i;
+
+	nbr = nbr * 4;
+	i = 1;
+	while (i * i <= nbr)
+	{
+		if (i * i == nbr)
+			return (i);
+		i++;
+	}
+	return (i - 1);
 }
 
-void	solve_tetros(void **map, void *tetros)
+void	solve_tetros(char ***map, t_list *tetros)
 {
-	int cur_size;
-	int res;
+	int min_size;
+	int tetr_cnt;
 
-	cur_size = calc_min(tetros);
-	if (!(*map = create_map(cur_size)))
+	tetr_cnt = ft_lstlen(tetros);
+	min_size = calc_min_size(tetr_cnt);
+	if (!(*map = create_map(min_size)))
 		raise_error("ALLOC ERROR");
 	while (try_solve(*map, tetros) == 0)
 	{
-		free_map(map, cur_size++);
-		if (!(*map = create_map(cur_size)))
+		free_map(*map);
+		if (!(*map = create_map(++min_size)))
 			raise_error("ALLOC ERROR");
 	}
 }
