@@ -99,7 +99,7 @@ int is_valid_tetro(char tetro[4])
 		}
 		i++;
 	}
-	return ((bounds == 6 || bounds == 8) ?  0 : 1);
+	return ((bounds == 6 || bounds == 8) ?  1 : 0);
 }
 
 t_list	*read_file(char *f_name)
@@ -125,7 +125,7 @@ t_list	*read_file(char *f_name)
 		if (!is_valid_tetro(cur_tetro))
 			raise_error("INVALID INPUT USAGE:KEK");
 		process_tetro(cur_tetro);
-		ft_lstadd(&result, ft_lstnew(cur_tetro, 8));
+		ft_lstaddend(&result, ft_lstnew(cur_tetro, 8));
 	}
 	if (read_res == GNL_ERROR || (read_res == GNL_SUCCES && line[0]))
 		raise_error("ERROR");
