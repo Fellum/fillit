@@ -45,7 +45,7 @@ int		try_solve(char **map, t_list *tetros)
 		x = 0;
 		while (map[x])
 		{
-			if (map[y][x] == '.' && insert(map, tetros->content, x, y, symb))
+			if (insert(map, tetros->content, x, y, symb))
 			{
 				symb++;
 				if (try_solve(map, tetros->next))

@@ -68,6 +68,40 @@ void	process_tetro(char *t)
 	}
 }
 
+static unsigned int ft_abs(int nbr)
+{
+	return ((nbr < 0) ? -nbr : nbr);
+}
+
+int is_valid_tetro(char tetro[4])
+{
+	int i;
+	int j;
+	unsigned char unchar[4][2];
+	int bounds;
+
+	bounds = 0;
+	i = 0;
+	while (i < 4)
+	{
+		uncharify(&unchar[i][0], &unchar[i][1], tetro[i]);
+		i++;
+	}
+	i = 0;
+	while (i < 4)
+	{
+		j = 0;
+		while (j < 4)
+		{
+			if (i != j && (ft_abs(unchar[i][0] - unchar[j][0]) + ft_abs(unchar[i][1] - unchar[j][1]) == 1))
+				bounds++;
+			j++;
+		}
+		i++;
+	}
+	return ((bounds == 6 || bounds == 8) ?  0 : 1);
+}
+
 t_list	*read_file(char *f_name)
 {
 	int		fd;
@@ -80,12 +114,16 @@ t_list	*read_file(char *f_name)
 	if ((fd = open(f_name, O_RDONLY)) <= 0)
 		raise_error("FILE ERROR!!");
 	read_tetro(fd, cur_tetro);
+	if (!is_valid_tetro(cur_tetro))
+		raise_error("INVALID INPUT USAGE:KEK");
 	process_tetro(cur_tetro);
-	ft_lstadd(&result, ft_lstnew(cur_tetro, 8));
+	ft_lstaddend(&result, ft_lstnew(cur_tetro, 8));
 	while (((read_res = ft_get_next_line(fd, &line) == GNL_SUCCES)) && (!line[0]))
 	{
 		free(line);
 		read_tetro(fd, cur_tetro);
+		if (!is_valid_tetro(cur_tetro))
+			raise_error("INVALID INPUT USAGE:KEK");
 		process_tetro(cur_tetro);
 		ft_lstadd(&result, ft_lstnew(cur_tetro, 8));
 	}
