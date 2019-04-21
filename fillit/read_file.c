@@ -13,13 +13,13 @@ void 	read_tetro(const int fd, char *res)
 	char cur_y;
 	char cur_block;
 
-	cur_y = 0;
+	cur_y = -1;
 	cur_x = 0;
 	cur_block = 0;
-	while (cur_y < 4 && ft_get_next_line(fd, &line) == GNL_SUCCES)
+	while (++cur_y < 4 && ft_get_next_line(fd, &line) == GNL_SUCCES)
 	{
-		cur_x = 0;
-		while (cur_x < 4 && line[cur_x])
+		cur_x = -1;
+		while (++cur_x < 4 && line[cur_x])
 		{
 			if (line[cur_x] == BLOCK_SYMBOL)
 			{
@@ -29,14 +29,12 @@ void 	read_tetro(const int fd, char *res)
 			}
 			else if (line[cur_x] != BLANK_SYMBOL)
 				raise_error("INVALID MAP");
-			cur_x++;
 		}
-		if (line[cur_x])
+		if (line[cur_x] || cur_x != 4)
 			raise_error("INVALID MAP");
-		cur_y++;
 		free(line);
 	}
-	if (cur_y != 4 && cur_x != 4 && cur_block != 4)
+	if (cur_y != 4 || cur_x != 4 || cur_block != 4)
 		raise_error("INVALID MAP");
 }
 
