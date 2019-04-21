@@ -1,61 +1,68 @@
-//
-// Created by Jasper Leann on 2019-04-18.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   recursive_solver.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mdebbi <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/21 21:33:09 by mdebbi            #+#    #+#             */
+/*   Updated: 2019/04/21 21:33:54 by mdebbi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "libft.h"
 #include "fillit.h"
 
-int	insert(char **map, char *cords, char x, char y, char symb)//0 -fail, 1-suckass
+static int	insert(char **map, char *cords, t_cords cord, char symb)
 {
-	unsigned char xcord;
-	unsigned char ycord;
-	int inserted;
+	unsigned char	x;
+	unsigned char	y;
+	int				inserted;
 
 	inserted = 0;
 	if (symb != '.')
 		while (inserted < 4)
 		{
-			uncharify(&xcord, &ycord, cords[inserted]);
-			if (y - ycord < 0 || x - xcord < 0
-								|| map[y - ycord][x - xcord] != '.')
+			uncharify(&x, &y, cords[inserted]);
+			if (cord.y - y < 0 || cord.x - x < 0
+					|| map[cord.y - y][cord.x - x] != '.')
 				return (0);
 			inserted++;
 		}
 	inserted = 0;
 	while (inserted < 4)
 	{
-		uncharify(&xcord, &ycord, cords[inserted]);
-		map[y - ycord][x - xcord] = symb;
+		uncharify(&x, &y, cords[inserted]);
+		map[cord.y - y][cord.x - x] = symb;
 		inserted++;
 	}
 	return (1);
 }
 
-
-
-int		try_solve(char **map, t_list *tetros)
+int			try_solve(char **map, t_list *tetros)
 {
-	static char symb = 'A';
-	char x, y;
+	static char	symb = 'A';
+	t_cords		cord;
+
 	if (!tetros)
 		return (1);
-	y = 0;
-	while (map[y])
+	cord.y = 0;
+	while (map[cord.y])
 	{
-		x = 0;
-		while (map[x])
+		cord.x = 0;
+		while (map[cord.x])
 		{
-			if (insert(map, tetros->content, x, y, symb))
+			if (insert(map, tetros->content, cord, symb))
 			{
 				symb++;
 				if (try_solve(map, tetros->next))
 					return (1);
-				insert(map, tetros->content, x, y, '.');
+				insert(map, tetros->content, cord, '.');
 				symb--;
 			}
-			x++;
+			cord.x++;
 		}
-		y++;
+		cord.y++;
 	}
 	return (0);
 }

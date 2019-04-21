@@ -24,18 +24,18 @@ void 	read_tetro(const int fd, char *res)
 			if (line[cur_x] == BLOCK_SYMBOL)
 			{
 				if (cur_block == 4)
-					raise_error("INVALID MAP");
+					raise_error(MAP_ERROR);
 				res[cur_block++] = charify(cur_x, cur_y);
 			}
 			else if (line[cur_x] != BLANK_SYMBOL)
-				raise_error("INVALID MAP");
+				raise_error(MAP_ERROR);
 		}
 		if (line[cur_x] || cur_x != 4)
-			raise_error("INVALID MAP");
+			raise_error(MAP_ERROR);
 		free(line);
 	}
 	if (cur_y != 4 || cur_x != 4 || cur_block != 4)
-		raise_error("INVALID MAP");
+		raise_error(MAP_ERROR);
 }
 
 void	process_tetro(char *t)
@@ -105,15 +105,15 @@ t_list	*read_file(char *f_name)
 	int		fd;
 	int 	read_res;
 	char	cur_tetro[4];
-	char	*line;
+	char	*line = NULL;
 	t_list	*result;
 
 	result = NULL;
 	if ((fd = open(f_name, O_RDONLY)) <= 0)
-		raise_error("FILE ERROR!!");
+		raise_error(FILE_ERROR);
 	read_tetro(fd, cur_tetro);
 	if (!is_valid_tetro(cur_tetro))
-		raise_error("INVALID INPUT USAGE:KEK");
+		raise_error(INVALID_TETR);
 	process_tetro(cur_tetro);
 	ft_lstaddend(&result, ft_lstnew(cur_tetro, 8));
 	while (((read_res = ft_get_next_line(fd, &line) == GNL_SUCCES)) && (!line[0]))
@@ -121,11 +121,13 @@ t_list	*read_file(char *f_name)
 		free(line);
 		read_tetro(fd, cur_tetro);
 		if (!is_valid_tetro(cur_tetro))
-			raise_error("INVALID INPUT USAGE:KEK");
+			raise_error(INVALID_TETR);
 		process_tetro(cur_tetro);
 		ft_lstaddend(&result, ft_lstnew(cur_tetro, 8));
 	}
 	if (read_res == GNL_ERROR || (read_res == GNL_SUCCES && line[0]))
 		raise_error("ERROR");
+	if (ft_lstlen(result) > 26)
+		raise_error(INVALID_TETRIMINO_NUMBER);
 	return (result);
 }
