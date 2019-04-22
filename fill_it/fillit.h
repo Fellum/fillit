@@ -35,4 +35,6 @@ void			raise_error(char *desc);
 void			uncharify(unsigned char *x, unsigned char *y, unsigned char c);
 char			charify(unsigned char x, unsigned char y);
 unsigned int	ft_abs(int nbr);
+void			free_map(char **map);
+void			ft_freelst(t_list **head);
 #endif

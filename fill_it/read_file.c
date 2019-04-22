@@ -107,7 +107,7 @@ static void	tetro_read_process_add(int fd, char cur_tetro[4], t_list **result)
 	process_tetro(cur_tetro);
 	if (!(tmp = ft_lstnew(cur_tetro, 8)))
 		raise_error(MAP_ERROR);
-	ft_lstaddend(result, ft_lstnew(cur_tetro, 8));
+	ft_lstaddend(result, tmp);
 }
 
 t_list		*read_file(char *f_name)

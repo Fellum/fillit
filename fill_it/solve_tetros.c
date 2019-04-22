@@ -34,7 +34,7 @@ static char	**create_map(int size)
 	return (map);
 }
 
-static void	free_map(char **map)
+void	free_map(char **map)
 {
 	int i;
 
