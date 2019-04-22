@@ -1,49 +1,53 @@
-//
-// Created by Jasper Leann on 2019-04-18.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   read_file.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mdebbi <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/22 15:36:40 by mdebbi            #+#    #+#             */
+/*   Updated: 2019/04/22 15:36:41 by mdebbi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "libft.h"
 #include <fcntl.h>
 #include "fillit.h"
 
-void 	read_tetro(const int fd, char *res)
+static void	read_tetro(const int fd, char *res)
 {
-	char *line;
-	char cur_x;
-	char cur_y;
-	char cur_block;
+	char	*line;
+	char	cur_block;
+	t_cords	cords;
 
-	cur_y = -1;
-	cur_x = 0;
+	cords.x = 0;
 	cur_block = 0;
-	while (++cur_y < 4 && ft_get_next_line(fd, &line) == GNL_SUCCES)
+	cords.y = -1;
+	while (++cords.y < 4 && ft_get_next_line(fd, &line) == GNL_SUCCES)
 	{
-		cur_x = -1;
-		while (++cur_x < 4 && line[cur_x])
-		{
-			if (line[cur_x] == BLOCK_SYMBOL)
+		cords.x = -1;
+		while (++cords.x < 4 && line[cords.x])
+			if (line[cords.x] == BLOCK_SYMBOL)
 			{
 				if (cur_block == 4)
 					raise_error(MAP_ERROR);
-				res[cur_block++] = charify(cur_x, cur_y);
+				res[cur_block++] = charify(cords.x, cords.y);
 			}
-			else if (line[cur_x] != BLANK_SYMBOL)
+			else if (line[cords.x] != BLANK_SYMBOL)
 				raise_error(MAP_ERROR);
-		}
-		if (line[cur_x] || cur_x != 4)
+		if (line[cords.x] || cords.x != 4)
 			raise_error(MAP_ERROR);
 		free(line);
 	}
-	if (cur_y != 4 || cur_x != 4 || cur_block != 4)
+	if (cords.y != 4 || cords.x != 4 || cur_block != 4)
 		raise_error(MAP_ERROR);
 }
 
-void	process_tetro(char *t)
+static void	process_tetro(char *t)
 {
 	char			cur;
 	unsigned char	max_c[2];
 	unsigned char	cur_c[2];
-
 
 	max_c[0] = 0;
 	max_c[1] = 0;
@@ -66,64 +70,60 @@ void	process_tetro(char *t)
 	}
 }
 
-static unsigned int ft_abs(int nbr)
+static int	is_valid_tetro(char tetro[4])
 {
-	return ((nbr < 0) ? -nbr : nbr);
-}
-
-int is_valid_tetro(char tetro[4])
-{
-	int i;
-	int j;
-	unsigned char unchar[4][2];
-	int bounds;
+	int				i;
+	int				j;
+	unsigned char	unchar[4][2];
+	int				bounds;
 
 	bounds = 0;
-	i = 0;
-	while (i < 4)
-	{
+	i = -1;
+	while (++i < 4)
 		uncharify(&unchar[i][0], &unchar[i][1], tetro[i]);
-		i++;
-	}
 	i = 0;
 	while (i < 4)
 	{
 		j = 0;
 		while (j < 4)
 		{
-			if (i != j && (ft_abs(unchar[i][0] - unchar[j][0]) + ft_abs(unchar[i][1] - unchar[j][1]) == 1))
+			if (i != j && (ft_abs(unchar[i][0] - unchar[j][0])
+					+ ft_abs(unchar[i][1] - unchar[j][1]) == 1))
 				bounds++;
 			j++;
 		}
 		i++;
 	}
-	return ((bounds == 6 || bounds == 8) ?  1 : 0);
+	return ((bounds == 6 || bounds == 8) ? 1 : 0);
 }
 
-t_list	*read_file(char *f_name)
+static void	tetro_read_process_add(int fd, char cur_tetro[4], t_list **result)
 {
-	int		fd;
-	int 	read_res;
-	char	cur_tetro[4];
-	char	*line = NULL;
-	t_list	*result;
-
-	result = NULL;
-	if ((fd = open(f_name, O_RDONLY)) <= 0)
-		raise_error(FILE_ERROR);
 	read_tetro(fd, cur_tetro);
 	if (!is_valid_tetro(cur_tetro))
 		raise_error(INVALID_TETR);
 	process_tetro(cur_tetro);
-	ft_lstaddend(&result, ft_lstnew(cur_tetro, 8));
-	while (((read_res = ft_get_next_line(fd, &line) == GNL_SUCCES)) && (!line[0]))
+	ft_lstaddend(result, ft_lstnew(cur_tetro, 8));
+}
+
+t_list		*read_file(char *f_name)
+{
+	int		fd;
+	int		read_res;
+	char	cur_tetro[4];
+	char	*line;
+	t_list	*result;
+
+	line = NULL;
+	result = NULL;
+	if ((fd = open(f_name, O_RDONLY)) <= 0)
+		raise_error(FILE_ERROR);
+	tetro_read_process_add(fd, cur_tetro, &result);
+	while (((read_res = ft_get_next_line(fd, &line) == GNL_SUCCES))
+														&& (!line[0]))
 	{
 		free(line);
-		read_tetro(fd, cur_tetro);
-		if (!is_valid_tetro(cur_tetro))
-			raise_error(INVALID_TETR);
-		process_tetro(cur_tetro);
-		ft_lstaddend(&result, ft_lstnew(cur_tetro, 8));
+		tetro_read_process_add(fd, cur_tetro, &result);
 	}
 	if (read_res == GNL_ERROR || (read_res == GNL_SUCCES && line[0]))
 		raise_error("ERROR");

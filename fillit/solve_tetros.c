@@ -1,15 +1,23 @@
-//
-// Created by Jasper Leann on 2019-04-18.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   solve_tetros.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mdebbi <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/22 15:31:47 by mdebbi            #+#    #+#             */
+/*   Updated: 2019/04/22 15:31:51 by mdebbi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "fillit.h"
 #include "libft.h"
 
-static char **create_map(int size)
+static char	**create_map(int size)
 {
-	char **map;
-	int i;
-	int j;
+	char	**map;
+	int		i;
+	int		j;
 
 	map = (char**)malloc(sizeof(char*) * (size + 1));
 	map[size] = 0;
@@ -26,8 +34,6 @@ static char **create_map(int size)
 	return (map);
 }
 
-
-
 static void	free_map(char **map)
 {
 	int i;
@@ -38,7 +44,7 @@ static void	free_map(char **map)
 	free(map);
 }
 
-int calc_min_size(int nbr)
+int			calc_min_size(int nbr)
 {
 	int i;
 
@@ -53,7 +59,7 @@ int calc_min_size(int nbr)
 	return (i - 1);
 }
 
-void	solve_tetros(char ***map, t_list *tetros)
+void		solve_tetros(char ***map, t_list *tetros)
 {
 	int min_size;
 	int tetr_cnt;
@@ -69,4 +75,3 @@ void	solve_tetros(char ***map, t_list *tetros)
 			raise_error("ALLOC ERROR");
 	}
 }
-
