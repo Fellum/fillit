@@ -1,25 +1,26 @@
-
-
+NAME = fillit
 SRC_DIR = ./fill_it
+SRC = $(wildcard $(SRC_DIR)/*.c)
+OBJ_DIR = ./objs
+OBJ = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))
 INC_DIR	:= ./fill_it
 LIBFT_DIR = ./libft
-LIB_INC = $(LIBFT_DIR)/includes
-SRCS = main.c misc.c output.c read_file.c recursive_solver.c runner.c solve_tetros.c
-OBJS = main.o misc.o output.o read_file.o recursive_solver.o runner.o solve_tetros.o
-
-NAME = fillit
+LIBFT_INC_DIR = $(LIBFT_DIR)/includes
 
 all: $(NAME)
 
-%.o:$(SRC_DIR)/%.c
-	@gcc -Wall -Werror -Wextra -I $(INC_DIR) -I $(LIB_INC) -o $@ -c $<
+$(OBJ_DIR)/%.o:$(SRC_DIR)/%.c
+	@gcc -Wall -Werror -Wextra -I $(INC_DIR) -I $(LIBFT_INC_DIR) -o $@ -c $<
 
-$(NAME): $(OBJS)
+$(OBJ_DIR):
+	@mkdir -p $(OBJ_DIR)
+
+$(NAME): $(OBJ_DIR) $(OBJ)
 	@make -C $(LIBFT_DIR)
-	@gcc -Wall -Werror -Wextra  -L./libft/ -lft -o $(NAME) $(OBJS)
+	@gcc -Wall -Werror -Wextra  -L $(LIBFT_DIR) -l ft -o $(NAME) $(OBJ)
 
 clean:
-	@rm -rf $(OBJS)
+	@rm -rf $(OBJ_DIR)
 	@make -C $(LIBFT_DIR) clean
 
 fclean: clean

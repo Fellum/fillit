@@ -6,7 +6,7 @@
 /*   By: mdebbi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 15:34:54 by mdebbi            #+#    #+#             */
-/*   Updated: 2019/04/22 15:34:56 by mdebbi           ###   ########.fr       */
+/*   Updated: 2019/04/23 01:30:05 by jleann           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 void	ft_freelst(t_list **head)
 {
 	t_list *tmp;
-	while(*head)
+
+	while (*head)
 	{
 		tmp = *head;
 		*head = (*head)->next;

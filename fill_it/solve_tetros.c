@@ -6,7 +6,7 @@
 /*   By: mdebbi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 15:31:47 by mdebbi            #+#    #+#             */
-/*   Updated: 2019/04/22 15:31:51 by mdebbi           ###   ########.fr       */
+/*   Updated: 2019/04/23 01:30:43 by jleann           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static char	**create_map(int size)
 	return (map);
 }
 
-void	free_map(char **map)
+void		free_map(char **map)
 {
 	int i;
 
