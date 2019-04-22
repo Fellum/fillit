@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdebbi <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: jleann <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/22 15:36:40 by mdebbi            #+#    #+#             */
-/*   Updated: 2019/04/22 15:36:41 by mdebbi           ###   ########.fr       */
+/*   Created: 2019/04/22 15:36:40 by jleann            #+#    #+#             */
+/*   Updated: 2019/04/22 15:36:41 by jleann           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,10 +99,14 @@ static int	is_valid_tetro(char tetro[4])
 
 static void	tetro_read_process_add(int fd, char cur_tetro[4], t_list **result)
 {
+    t_list *tmp;
+
 	read_tetro(fd, cur_tetro);
 	if (!is_valid_tetro(cur_tetro))
 		raise_error(INVALID_TETR);
 	process_tetro(cur_tetro);
+	if (!(tmp = ft_lstnew(cur_tetro, 8)))
+	    raise_error(MAP_ERROR);
 	ft_lstaddend(result, ft_lstnew(cur_tetro, 8));
 }
 

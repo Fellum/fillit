@@ -34,6 +34,5 @@ int				try_solve(char **map, t_list *tetros);
 void			raise_error(char *desc);
 void			uncharify(unsigned char *x, unsigned char *y, unsigned char c);
 char			charify(unsigned char x, unsigned char y);
-void			printbits(unsigned char c);
 unsigned int	ft_abs(int nbr);
 #endif
