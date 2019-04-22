@@ -8,5 +8,5 @@ void 	output(char **map)
 {
 	while (*map)
 		ft_putendl(*map++);
-	ft_putchar('\n');
+//	ft_putchar('\n');//nenad?
 }
