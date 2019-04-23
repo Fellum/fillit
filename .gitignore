@@ -1,7 +1,6 @@
 *
 !.gitmodules
 !.gitignore
-!main.c
 !CMakeLists.txt
-!fillit/
-!fillit/*
+!fill_it/
+!fill_it/*
